@@ -28,10 +28,17 @@ extension HttpMethod {
 
 
 struct Resource<A> {
-    let url: NSURL
+    var url = NSURL()
     let method: HttpMethod<NSData>
     let parse: (NSData) -> A?
+    
 }
+
+let codeURL = NSURL(string: "http://challenge.code2040.org/api/register")!
+let tokenDictionary: [String: String] = ["token": "7cf4e3a23e3782e877c37eb3d3f383caL"]
+let gitDict: [String: NSURL] = ["github": NSURL(string: "https://github.com/Jxrgxn/Code2040App.git")!]
+let testArray = [tokenDictionary, gitDict]
+
 
 extension Resource {
     init(url: NSURL, method: HttpMethod<AnyObject> = .get, parseJSON: (AnyObject) -> A?) {
@@ -67,3 +74,18 @@ final class Webservice {
             }.resume()
     }
 }
+
+
+
+
+Webservice().load(Resource.init(url: codeURL, method: HttpMethod.post(testArray), parseJSON: { _ in
+    return true
+}), completion: { result in
+    print(result)
+})
+
+
+
+
+
+
